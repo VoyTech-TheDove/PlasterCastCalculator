@@ -1,13 +1,18 @@
 package com.goleb.wojciech;
 
-public class Square extends Shape {
-    long side;
+public class Square extends Figure {
+    double side;
 
-    public Square(long side) {
+    public Square(double side) {
         this.side = side;
     }
+
     @Override
-    long calculateArea() {
-        return side*side;
+    double calculateArea() {
+        return side * side;
+    }
+    @Override
+    public String toString (){
+        return "Square with "+this.side +"mm side";
     }
 }
