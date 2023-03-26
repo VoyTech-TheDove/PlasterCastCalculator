@@ -7,8 +7,8 @@ public class CastCalculator {
     private static final double PLASTER_COST_PER_LITTER = 3;
     private static final double PLASTER_THICKNESS_IN_MM = 5;
     private static final String CURRENCY = "zl";
-    private static final double AREA_CORRECTION_MM2_IN_CM2 = 10 ^ 2;
-    private static final double VOLUME_CORRECTION_MM3_IN_LITER = 10 ^ 6;
+    private static final double AREA_CORRECTION_MM2_IN_CM2 = 100;
+    private static final double VOLUME_CORRECTION_MM3_IN_LITER = 1000000;
     public void calculationAndDisplay (List<? extends Figure> shapes){
         double areaInMM2=calculateTotalAreaInMM2(shapes);
         displayTotalAreaInCM2String(areaInMM2);
