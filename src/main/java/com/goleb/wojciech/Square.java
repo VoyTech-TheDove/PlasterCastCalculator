@@ -7,6 +7,12 @@ public class Square extends Figure {
         this.side = side;
     }
 
+    static Square create(){
+        System.out.println("please enter square width");
+        double side =Input.getDoubleFromUser();
+        return new Square(side);
+    }
+
     @Override
     double calculateArea() {
         return side * side;

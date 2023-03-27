@@ -8,6 +8,15 @@ public class Triangle extends Figure {
         this.base = base;
         this.height = height;
     }
+
+    static Triangle create(){
+        System.out.println("please enter triangle base length");
+        double base =Input.getDoubleFromUser();
+        System.out.println("please enter triangle height");
+        double height =Input.getDoubleFromUser();
+        return new Triangle(base, height);
+    }
+
     @Override
     double calculateArea() {
         return base*height/2;

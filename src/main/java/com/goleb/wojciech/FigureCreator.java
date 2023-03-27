@@ -1,7 +1,7 @@
 package com.goleb.wojciech;
 
 public class FigureCreator {
-    public static PossibleShapes shapeChoice() {
+    public static PossibleShapes userChooseShape() {
         System.out.println("please select");
         for (PossibleShapes shape : PossibleShapes.values())
             System.out.println(shape);
@@ -15,34 +15,18 @@ public class FigureCreator {
 
     }
 
-    public Figure createFigure(PossibleShapes shape) {
+    public static Figure createFigure(PossibleShapes shape) {
         switch (shape) {
             case CIRCLE:
-                return createCircle();
+                return Circle.create();
             case SQUARE:
-                return createSquare();
+                return Square.create();
             case TRIANGLE:
-                return createTriangle();
+                return Triangle.create();
             default:
                 return null;
         }
     }
-    private Circle createCircle(){
-        System.out.println("please enter circle radius");
-        double radius =Input.getDoubleFromUser();
-        return new Circle(radius);
-    }
-    private Triangle createTriangle(){
-        System.out.println("please enter triangle base length");
-        double base =Input.getDoubleFromUser();
-        System.out.println("please enter triangle height");
-        double height =Input.getDoubleFromUser();
-        return new Triangle(base, height);
-    }
-    private Square createSquare(){
-        System.out.println("please enter square width");
-        double side =Input.getDoubleFromUser();
-        return new Square(side);
-    }
+
 }
 
