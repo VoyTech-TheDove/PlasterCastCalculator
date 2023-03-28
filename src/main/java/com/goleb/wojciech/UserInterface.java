@@ -14,55 +14,91 @@ public class UserInterface {
     private String clientName;
     private final List<Figure> figureList = new ArrayList<>();
     final Repository repository = new Repository();
+    final OrderRepository orderRepository = new OrderRepository();
 
     public void start() {
-
         printGreetings();
-        updateLogAndLastLoginDisplay();
+        updateLogsAndLastLoginDisplay();
         displayNumberOfLogsThisYear();
-        askToClearTheLog();
+        askAndClearTheLoginLog();
+        askAndCreateMonthlyReport();
+        askAndAddAnOrder();
+    }
+
+    private void askAndCreateMonthlyReport() {
+        System.out.println("Would you like to create a monthly Report?");
+        if (askForConfirmation()) {
+         orderRepository.monthlyOrderReport();
+        }
+    }
+
+    private void askAndAddAnOrder() {
+        System.out.println("Would you like to add an order?");
+        if (askForConfirmation()) {
+            newOrder();
+        }
+    }
+
+    private void newOrder() {
         clientName = askForClientName();
         getFigureListFromUser();
+        OrderService orderService = new OrderService();
+        orderService.createOrderAndUpdateOrderLog(clientName, figureList);
+        displayNewOrder();
+        
+    }
+
+    private void displayNewOrder() {
         displayClientName();
         displayFigureList();
         CastCalculator castCalculator = new CastCalculator();
         castCalculator.calculationAndDisplay(figureList);
     }
 
-    private void askToClearTheLog() {
-        System.out.println("Would you like to clear the log?");
-        String wantsToClear = Input.getStringFromUser().toUpperCase();
-        if(wantsToClear.equals(KEYWORD_1)||wantsToClear.equals(KEYWORD_2)) {
-            repository.resetLog();
+    private void askAndClearTheLoginLog() {
+        System.out.println("Would you like to clear the Login log?");
+        if (askForConfirmation()) {
+            repository.resetLoginLog();
         }
     }
 
-    private void updateLogAndLastLoginDisplay() {
-        repository.updateLog();
+    private static boolean askForConfirmation() {
+        String wantsToClear = Input.getStringFromUser().toUpperCase();
+        if (wantsToClear.equals(KEYWORD_1) || wantsToClear.equals(KEYWORD_2)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void updateLogsAndLastLoginDisplay() {
+        orderRepository.updateOrderLogFromFile();
+        repository.updateLoginLog();
         lastLoginDisplay();
     }
 
     private void displayNumberOfLogsThisYear() {
         System.out.print("Number of logs this year: ");
-        System.out.println(repository.numberOfLogsThisYear());
+        System.out.println(repository.numberOfLoginsThisYear());
     }
 
     private void lastLoginDisplay() {
-        if(repository.workLog.size()>1) {
+        if (repository.workLog.size() > 1) {
             System.out.print("Last login: ");
             System.out.println(timeAsString(repository.workLog.get(repository.workLog.size() - 2)));
-        }else{
+        } else {
             System.out.println("First time login");
         }
     }
 
     private static String todaysDateAsString() {
-        LocalDateTime now =LocalDateTime.now();
-        DateTimeFormatter dateFormat= DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return now.format(dateFormat);
     }
-    private static String timeAsString(LocalDateTime time) {
-        DateTimeFormatter dateFormat= DateTimeFormatter.ofPattern("hh:mm dd-MM-yyyy");
+
+    public static String timeAsString(LocalDateTime time) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("hh:mm dd-MM-yyyy");
         return time.format(dateFormat);
     }
 
@@ -103,7 +139,8 @@ public class UserInterface {
     public boolean askIfFinished() {
         System.out.println("Would you like to exit?");
         String wantsToExit = Input.getStringFromUser().toUpperCase();
-        return (wantsToExit.equals(KEYWORD_2) || wantsToExit.equals(EXIT_KEYWORD));
+        return (wantsToExit.equals(KEYWORD_2)
+                || wantsToExit.equals(KEYWORD_1)
+                || wantsToExit.equals(EXIT_KEYWORD));
     }
-
 }

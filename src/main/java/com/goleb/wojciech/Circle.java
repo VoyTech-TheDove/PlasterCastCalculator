@@ -2,6 +2,7 @@ package com.goleb.wojciech;
 
 public class Circle extends Figure {
     double radius;
+    PossibleShapes shape = PossibleShapes.CIRCLE;
 
     public Circle(double radius) {
         this.radius = radius;

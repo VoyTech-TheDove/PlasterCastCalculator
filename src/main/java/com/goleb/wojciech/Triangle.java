@@ -3,6 +3,7 @@ package com.goleb.wojciech;
 public class Triangle extends Figure {
     double base;
     double height;
+    PossibleShapes shape = PossibleShapes.TRIANGLE;
 
     public Triangle(double base, double height) {
         this.base = base;

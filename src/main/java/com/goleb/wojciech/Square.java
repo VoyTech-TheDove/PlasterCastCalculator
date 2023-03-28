@@ -2,6 +2,7 @@ package com.goleb.wojciech;
 
 public class Square extends Figure {
     double side;
+    PossibleShapes shape = PossibleShapes.SQUARE;
 
     public Square(double side) {
         this.side = side;

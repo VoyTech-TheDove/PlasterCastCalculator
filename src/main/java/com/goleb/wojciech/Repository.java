@@ -4,42 +4,41 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Repository {
-    public static final String LOG_FILE_NAME = "workLog.txt";
+    public static final String LOG_FILE_NAME = "workLog.dat";
     List<LocalDateTime> workLog = new ArrayList<>();
 
-    public void updateLog() {
-        loadLogFromFile();
+    public void updateLoginLog() {
+        loadLogFromFile(LOG_FILE_NAME, workLog);
         workLog.add(LocalDateTime.now());
-        saveLogToFile();
+        saveLogToFile(LOG_FILE_NAME, workLog);
     }
 
 
-    private void saveLogToFile() {
+    protected void saveLogToFile(String fileName, List<?> list) {
         try {
-            FileOutputStream fos = new FileOutputStream(LOG_FILE_NAME);
+            FileOutputStream fos = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(workLog);
+            oos.writeObject(list);
             oos.close();
         } catch (IOException e) {
             System.out.println("IOException while saving the log");
         }
     }
 
-    private void loadLogFromFile() {
-        if (fileExist(LOG_FILE_NAME)) {
+    public void loadLogFromFile(String fileName, List<?> list) {
+        if (fileExist(fileName)) {
             try {
-                FileInputStream fis = new FileInputStream(LOG_FILE_NAME);
+                FileInputStream fis = new FileInputStream(fileName);
                 ObjectInputStream ois = new ObjectInputStream(fis);
-                workLog = (List<LocalDateTime>) ois.readObject();
+                list = (List<LocalDateTime>) ois.readObject();
                 ois.close();
             } catch (Exception e) {
                 System.out.println("error while loading the file");
             }
         } else {
-            System.out.println(LOG_FILE_NAME +" not found");
+            System.out.println(fileName + " not found");
         }
     }
 
@@ -48,12 +47,15 @@ public class Repository {
         return file.isFile();
     }
 
-    public void resetLog() {
-        workLog = new ArrayList<>();
-        saveLogToFile();
+    public void resetLoginLog() {
+        resetLog(LOG_FILE_NAME, workLog);
     }
 
-    public long numberOfLogsThisYear() {
+    public void resetLog(String fileName, List<?> list) {
+        list = new ArrayList<>();
+        saveLogToFile(fileName,list);
+    }
+    public long numberOfLoginsThisYear() {
         long number = workLog.stream()
                 .filter(dates -> dates.getYear() ==
                         LocalDateTime.now().getYear()
